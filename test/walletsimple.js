@@ -14,6 +14,7 @@ const EthWalletSimple = artifacts.require('./WalletSimple.sol');
 const RskWalletSimple = artifacts.require('./RskWalletSimple.sol');
 const EtcWalletSimple = artifacts.require('./EtcWalletSimple.sol');
 const CeloWalletSimple = artifacts.require('./CeloWalletSimple.sol');
+const xDaiWalletSimple = artifacts.require('./xDaiWalletSimple.sol');
 const Forwarder = artifacts.require('./Forwarder.sol');
 const FixedSupplyToken = artifacts.require('./FixedSupplyToken.sol');
 
@@ -51,6 +52,12 @@ const coins = [
     nativePrefix: 'CELO',
     tokenPrefix: 'CELO-ERC20',
     WalletSimple: CeloWalletSimple,
+  },
+  {
+    name: 'xDai',
+    nativePrefix: 'xDai',
+    tokenPrefix: 'xDai-ERC20',
+    WalletSimple: xDaiWalletSimple,
   },
 ];
 
@@ -938,7 +945,7 @@ coins.forEach(({ name: coinName, nativePrefix, tokenPrefix, WalletSimple }) => {
       before(async function() {
         // Create and fund the wallet
         wallet = await WalletSimple.new([accounts[4], accounts[5], accounts[6]]);
-        fixedSupplyTokenContract = await FixedSupplyToken.new(undefined, { from: accounts[0] });
+        fixedSupplyTokenContract = await FixedSupplyToken.new({ from: accounts[0] });
         const balance = await fixedSupplyTokenContract.balanceOf.call(accounts[0]);
         balance.should.eql(web3.toBigNumber(1000000));
       });
